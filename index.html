@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Tool Buff View & Tim TikTok Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #080f1a;
+            --bg-card: #0d1929;
+            --bg-panel: #0a1520;
+            --teal: #00e5c3;
+            --teal-dim: #00b89c;
+            --teal-glow: rgba(0,229,195,0.15);
+            --teal-border: rgba(0,229,195,0.25);
+            --green: #4ade80;
+            --red: #f87171;
+            --yellow: #fbbf24;
+            --sky: #7dd3fc;
+            --text-primary: #e2f0f7;
+            --text-muted: #6b8fa8;
+            --text-dim: #3d5a6e;
+            --border: rgba(255,255,255,0.07);
+            --radius-lg: 20px;
+            --radius-pill: 999px;
+        }
+
+```
+    * { margin: 0; padding: 0; box-sizing: border-box; min-width: 0; }
+
+    body {
+        min-height: 100vh;
+        background: var(--bg-dark);
+        font-family: 'Sora', system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px 16px 40px;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(0,229,195,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,229,195,0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 400px;
+        background: radial-gradient(ellipse, rgba(0,229,195,0.08) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .glass-card {
+        max-width: 560px;
+        width: 100%;
+        background: var(--bg-card);
+        border-radius: 24px;
+        border: 1px solid var(--teal-border);
+        box-shadow:
+            0 0 0 1px rgba(0,229,195,0.05),
+            0 30px 60px rgba(0,0,0,0.5),
+            inset 0 1px 0 rgba(255,255,255,0.06);
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        margin-top: 20px;
+        min-width: 0;
+    }
+
+    /* Header */
+    .header {
+        padding: 28px 24px 22px;
+        text-align: center;
+        background: linear-gradient(160deg, #0a2230 0%, #061520 100%);
+        border-bottom: 1px solid var(--teal-border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::before {
+        content: '';
+        position: absolute;
+        top: -40px; left: 50%;
+        transform: translateX(-50%);
+        width: 200px; height: 100px;
+        background: radial-gradient(ellipse, rgba(0,229,195,0.2) 0%, transparent 70%);
+    }
+
+    .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(0,229,195,0.1);
+        border: 1px solid var(--teal-border);
+        border-radius: var(--radius-pill);
+        padding: 4px 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--teal);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .header h1 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+        position: relative;
+    }
+
+    .header h1 span {
+        color: var(--teal);
+    }
+
+    .header p {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    .author-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 12px;
+        background: rgba(0,0,0,0.4);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-pill);
+        padding: 5px 14px;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Content */
+    .content {
+        padding: 22px 20px 24px;
+        overflow: hidden;
+    }
+
+    /* Menu */
+    .menu-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .menu-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 12px 8px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        color: var(--text-muted);
+        font-family: 'Sora', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        letter-spacing: 0.3px;
+    }
+
+    .menu-btn .icon {
+        font-size: 1.3rem;
+    }
+
+    .menu-btn:hover, .menu-btn.active {
+        background: var(--teal-glow);
+        border-color: var(--teal-border);
+        color: var(--teal);
+        transform: translateY(-2px);
+    }
+
+    .menu-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* Panel */
+    .panel {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 18px;
+        animation: fadeIn 0.2s ease;
+        overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--teal);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .panel-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--teal-border);
+    }
+
+    /* Form */
+    .form-group {
+        margin-bottom: 14px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    input, select {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(0,0,0,0.4);
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        font-family: 'Sora', sans-serif;
+        outline: none;
+        transition: all 0.2s;
+        display: block;
+    }
+
+    input:focus, select:focus {
+        border-color: var(--teal-border);
+        box-shadow: 0 0 0 3px var(--teal-glow);
+        background: rgba(0,0,0,0.6);
+    }
+
+    input::placeholder { color: var(--text-dim); }
+
+    select option { background: #0d1929; }
+
+    /* Buttons */
+    .btn {
+        width: 100%;
+        padding: 13px 16px;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Sora', sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        letter-spacing: 0.3px;
+    }
+
+    .btn + .btn { margin-top: 8px; }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--teal-dim), #007a68);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0,185,156,0.25);
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0,229,195,0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(255,255,255,0.04);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255,255,255,0.08);
+        color: var(--text-primary);
+    }
+
+    .btn-danger {
+        background: rgba(248,113,113,0.1);
+        color: var(--red);
+        border: 1px solid rgba(248,113,113,0.2);
+    }
+
+    .btn-danger:hover { background: rgba(248,113,113,0.2); }
+
+    .btn:active { transform: scale(0.98) !important; }
+
+    /* Service selector */
+    .service-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .service-tab {
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .service-tab .tab-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    .service-tab .tab-price { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+    .service-tab.active {
+        background: var(--teal-glow);
+        border-color: var(--teal);
+        color: var(--teal);
+    }
+
+    .service-tab.active .tab-price { color: var(--teal-dim); }
+
+    /* Price estimate */
+    .price-estimate {
+        background: rgba(0,229,195,0.06);
+        border: 1px solid var(--teal-border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        text-align: center;
+        font-size: 0.82rem;
+        color: var(--sky);
+        margin: 12px 0;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Balance box */
+    .balance-display {
+        text-align: center;
+        padding: 24px 16px;
+    }
+
+    .balance-label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--text-dim);
+        font-family: 'JetBrains Mono', monospace;
+        margin-bottom: 8px;
+    }
+
+    .balance-value {
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: var(--green);
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: -1px;
+        text-shadow: 0 0 30px rgba(74,222,128,0.3);
+    }
+
+    .balance-currency {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 4px;
+    }
+
+    /* Status badge */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        font-size: 0.7rem;
+        font-weight: 700;
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending { background: rgba(251,191,36,0.12); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+    .status-inprogress { background: rgba(125,211,252,0.12); color: var(--sky); border: 1px solid rgba(125,211,252,0.25); }
+    .status-completed { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+    .status-partial { background: rgba(251,191,36,0.12); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+    .status-cancelled, .status-error { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+    /* History items */
+    .history-item {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        transition: border-color 0.2s;
+    }
+
+    .history-item:hover { border-color: var(--teal-border); }
+
+    .history-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .history-id {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--teal);
+    }
+
+    .history-date {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+    }
+
+    .history-detail {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+
+    .history-link {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        font-family: 'JetBrains Mono', monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Check status panel */
+    .status-result-card {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--teal-border);
+        border-radius: 14px;
+        padding: 16px;
+        margin-top: 14px;
+    }
+
+    .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.8rem;
+    }
+
+    .status-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .status-key {
+        color: var(--text-dim);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+    }
+
+    .status-val {
+        color: var(--text-primary);
+        font-weight: 600;
+        text-align: right;
+    }
+
+    /* Welcome info */
+    .info-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .info-card {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .info-card .ic-icon { font-size: 1.4rem; margin-bottom: 5px; }
+    .info-card .ic-title { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+    .info-card .ic-price { font-size: 0.78rem; color: var(--teal); font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-top: 2px; }
+
+    .contact-bar {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        border-top: 1px solid var(--border);
+        margin-top: 10px;
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .spinner {
+        width: 44px;
+        height: 44px;
+        border: 3px solid rgba(0,229,195,0.15);
+        border-top-color: var(--teal);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Toast */
+    .toast-msg {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: rgba(13,25,41,0.95);
+        backdrop-filter: blur(12px);
+        padding: 10px 20px;
+        border-radius: var(--radius-pill);
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 0.85rem;
+        z-index: 1100;
+        border: 1px solid var(--teal-border);
+        pointer-events: none;
+        white-space: nowrap;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.2s;
+    }
+
+    /* Start screen */
+    .start-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        gap: 20px;
+        min-height: 260px;
+    }
+
+    .btn-start {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 800;
+        padding: 16px 44px;
+        border-radius: var(--radius-pill);
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(245,158,11,0.35);
+        transition: all 0.25s;
+        letter-spacing: 1.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Sora', sans-serif;
+    }
+
+    .btn-start:hover {
+        transform: scale(1.05);
+        box-shadow: 0 14px 40px rgba(245,158,11,0.5);
+    }
+
+    .key-box {
+        width: 100%;
+        max-width: 280px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        75% { transform: translateX(6px); }
+    }
+
+    .error-shake { animation: shake 0.3s ease-in-out; border-color: var(--red) !important; }
+
+    /* Success card */
+    .success-card {
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+    .success-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .success-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--green);
+        margin-bottom: 12px;
+    }
+
+    .success-detail {
+        background: rgba(0,0,0,0.3);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 14px;
+    }
+
+    .success-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 0.8rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .success-row:last-child { border-bottom: none; }
+    .success-row .sk { color: var(--text-dim); }
+    .success-row .sv { color: var(--text-primary); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--teal-border); border-radius: 4px; }
+</style>
+```
+
+</head>
+<body>
+
+<div class="glass-card" id="appContainer">
+    <div class="header">
+        <div class="header-badge">⚡ v2.0 PRO</div>
+        <h1>BUFF TIKTOK <span>PRO</span></h1>
+        <p>Tăng View & Tim nhanh chóng · Uy tín số 1</p>
+        <div class="author-tag">🌐 By Duy Hoang · ZL: 0385933633</div>
+    </div>
+    <div class="content" id="mainContent"></div>
+</div>
+
+<div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loadingText">Đang xử lý...</div>
+</div>
+
+<script>
+    const API_URL = "https://subtuongtac.com/api/v2";
+    const API_KEY = "32aa6bcd06e04d69df997fc2dbf8d8f1";
+    const TELE_TOKEN = "8749280669:AAFXp_SD6N0AZsygP85Id1iexwADSKwlp6E";
+    const TELE_CHAT_ID = "6286372153";
+    const VALID_KEY = "DuyHoangViewTT";
+    const HISTORY_KEY = "tiktok_orders_v2";
+
+    const SERVICES = {
+        view: { id: 5274, name: "TikTok View", icon: "👀", price_per_1000: 500, min: 1000, unit: "view", price_desc: "500đ / 1k view" },
+        like: { id: 355, name: "TikTok Tim", icon: "❤️", price_per_package: 600, package_size: 50, min: 50, unit: "tim", price_desc: "600đ / 50 tim" }
+    };
+
+    let ordersHistory = {};
+    let isAuthenticated = false;
+
+    function loadHistory() {
+        try { ordersHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '{}'); }
+        catch(e) { ordersHistory = {}; }
+    }
+
+    function saveHistory() {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(ordersHistory));
+    }
+
+    function showToast(msg, isError = false) {
+        let t = document.querySelector('.toast-msg');
+        if (!t) { t = document.createElement('div'); t.className = 'toast-msg'; document.body.appendChild(t); }
+        t.style.borderColor = isError ? 'rgba(248,113,113,0.4)' : 'rgba(0,229,195,0.25)';
+        t.innerHTML = msg;
+        t.style.visibility = 'visible';
+        t.style.opacity = '1';
+        t.style.transform = 'translateX(-50%) translateY(0)';
+        setTimeout(() => {
+            t.style.opacity = '0';
+            t.style.transform = 'translateX(-50%) translateY(10px)';
+            setTimeout(() => t.style.visibility = 'hidden', 300);
+        }, 2800);
+    }
+
+    function showLoading(show, text = "Đang xử lý...") {
+        const ol = document.getElementById('loadingOverlay');
+        const tl = document.getElementById('loadingText');
+        if (tl) tl.textContent = text;
+        ol.style.visibility = show ? 'visible' : 'hidden';
+        ol.style.opacity = show ? '1' : '0';
+    }
+
+    function sendTelegramNotification(text) {
+        if (!TELE_TOKEN || !TELE_CHAT_ID) return;
+        fetch(`https://api.telegram.org/bot${TELE_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELE_CHAT_ID, text, parse_mode: "HTML" })
+        }).catch(() => {});
+    }
+
+    async function apiRequest(payload) {
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
+                body: new URLSearchParams(payload).toString()
+            });
+            return await res.json();
+        } catch(e) { return { error: e.message || "Lỗi kết nối" }; }
+    }
+
+    function isValidTikTokUrl(url) {
+        return [
+            /^https?:\/\/(?:www\.)?tiktok\.com\/@[^\/]+\/video\/\d+/,
+            /^https?:\/\/(?:vm|vt)\.tiktok\.com\/\w+\/?$/,
+            /^https?:\/\/(?:www\.)?tiktok\.com\/t\/\w+\/?$/
+        ].some(p => p.test(url.trim()));
+    }
+
+    function calcPrice(type, qty) {
+        if (type === 'view') return (qty / 1000) * SERVICES.view.price_per_1000;
+        return Math.ceil(qty / SERVICES.like.package_size) * SERVICES.like.price_per_package;
+    }
+
+    function getStatusBadge(status) {
+        const s = (status || '').toLowerCase();
+        if (s === 'completed') return `<span class="status-badge status-completed">✓ Hoàn thành</span>`;
+        if (s === 'in progress' || s === 'inprogress' || s === 'processing') return `<span class="status-badge status-inprogress">⟳ Đang chạy</span>`;
+        if (s === 'partial') return `<span class="status-badge status-partial">◑ Một phần</span>`;
+        if (s === 'cancelled' || s === 'canceled') return `<span class="status-badge status-cancelled">✕ Đã hủy</span>`;
+        return `<span class="status-badge status-pending">⏳ Chờ xử lý</span>`;
+    }
+
+    // ===================== SCREENS =====================
+
+    function renderMainMenu() {
+        document.getElementById('mainContent').innerHTML = `
+            <div class="menu-grid">
+                <button class="menu-btn" id="btnBalance"><span class="icon">💰</span>Số dư</button>
+                <button class="menu-btn" id="btnOrder"><span class="icon">➕</span>Tạo đơn</button>
+                <button class="menu-btn" id="btnCheck"><span class="icon">🔍</span>Check đơn</button>
+                <button class="menu-btn" id="btnHistory"><span class="icon">📋</span>Lịch sử</button>
+            </div>
+            <div id="dynamicPanel">
+                <div class="panel">
+                    <div class="panel-title">📡 Dịch vụ</div>
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <div class="ic-icon">👀</div>
+                            <div class="ic-title">TikTok View</div>
+                            <div class="ic-price">500đ / 1k</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="ic-icon">❤️</div>
+                            <div class="ic-title">TikTok Tim</div>
+                            <div class="ic-price">600đ / 50</div>
+                        </div>
+                    </div>
+                    <div style="text-align:center; font-size:0.78rem; color:var(--text-dim); padding: 4px 0;">⚡ Xử lý tự động · Tăng nhanh · Uy tín</div>
+                    <div class="contact-bar">📞 ZL: 0385933633 · TK: _dxlwdyhg_15.01</div>
+                </div>
+            </div>
+        `;
+        document.getElementById('btnBalance').onclick = handleBalance;
+        document.getElementById('btnOrder').onclick = showCreateOrderUI;
+        document.getElementById('btnCheck').onclick = showCheckOrderUI;
+        document.getElementById('btnHistory').onclick = showHistoryUI;
+    }
+
+    // --- Balance ---
+    async function handleBalance() {
+        highlightMenuBtn('btnBalance');
+        showLoading(true, "Đang kiểm tra số dư...");
+        const panel = document.getElementById('dynamicPanel');
+        const result = await apiRequest({ key: API_KEY, action: "balance" });
+        showLoading(false);
+
+        if (result && result.balance !== undefined) {
+            const bal = parseFloat(result.balance).toLocaleString('vi-VN');
+            panel.innerHTML = `
+                <div class="panel">
+                    <div class="panel-title">💰 Số dư</div>
+                    <div class="balance-display">
+                        <div class="balance-label">TÀI KHOẢN API</div>
+                        <div class="balance-value">${bal}</div>
+                        <div class="balance-currency">VND ${result.currency ? '· ' + result.currency : ''}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            panel.innerHTML = `<div class="panel" style="text-align:center; padding:24px; color:var(--red);">❌ ${result?.error || "Không thể lấy số dư"}</div>`;
+        }
+    }
+
+    // --- Create Order ---
+    function showCreateOrderUI() {
+        highlightMenuBtn('btnOrder');
+        let selectedService = 'view';
+        const panel = document.getElementById('dynamicPanel');
+
+        function renderForm() {
+            const svc = SERVICES[selectedService];
+            panel.innerHTML = `
+                <div class="panel">
+                    <div class="panel-title">➕ Tạo đơn mới</div>
+                    <div class="service-tabs">
+                        <div class="service-tab ${selectedService === 'view' ? 'active' : ''}" data-s="view">
+                            <span class="tab-icon">👀</span>VIEW<div class="tab-price">500đ/1k view</div>
+                        </div>
+                        <div class="service-tab ${selectedService === 'like' ? 'active' : ''}" data-s="like">
+                            <span class="tab-icon">❤️</span>TIM<div class="tab-price">600đ/50 tim</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>🔗 Link video TikTok</label>
+                        <input type="text" id="videoLink" placeholder="https://www.tiktok.com/@user/video/...">
+                    </div>
+                    <div class="form-group">
+                        <label>🔢 Số lượng ${svc.unit} (tối thiểu ${svc.min.toLocaleString()})</label>
+                        <input type="number" id="quantity" placeholder="${svc.min}" min="${svc.min}" step="${selectedService === 'view' ? 100 : 50}">
+                    </div>
+                    <div class="price-estimate" id="priceEst">💰 Nhập số lượng để xem ước tính</div>
+                    <button class="btn btn-primary" id="submitBtn">🚀 Tạo đơn ngay</button>
+                    <button class="btn btn-secondary" id="cancelBtn">↩ Hủy</button>
+                </div>
+            `;
+
+            document.querySelectorAll('.service-tab').forEach(t => {
+                t.onclick = () => { selectedService = t.dataset.s; renderForm(); };
+            });
+
+            const qtyInput = document.getElementById('quantity');
+            const estDiv = document.getElementById('priceEst');
+
+            qtyInput.oninput = () => {
+                const qty = parseInt(qtyInput.value);
+                const svc = SERVICES[selectedService];
+                if (!isNaN(qty) && qty > 0) {
+                    const p = calcPrice(selectedService, qty);
+                    estDiv.textContent = `💰 Dự tính: ${p.toLocaleString('vi-VN')}đ cho ${qty.toLocaleString()} ${svc.unit}`;
+                } else {
+                    estDiv.textContent = `💰 Nhập số lượng để xem ước tính`;
+                }
+            };
+
+            document.getElementById('submitBtn').onclick = async () => {
+                const link = document.getElementById('videoLink').value.trim();
+                const qty = parseInt(qtyInput.value);
+                const svc = SERVICES[selectedService];
+
+                if (!link) { showToast("Vui lòng nhập link video", true); return; }
+                if (!isValidTikTokUrl(link)) { showToast("Link TikTok không hợp lệ!", true); return; }
+                if (isNaN(qty) || qty < svc.min) { showToast(`Tối thiểu ${svc.min.toLocaleString()} ${svc.unit}!`, true); return; }
+
+                await createOrder(link, qty, selectedService);
+            };
+
+            document.getElementById('cancelBtn').onclick = renderMainMenu;
+        }
+
+        renderForm();
+    }
+
+    async function createOrder(link, quantity, serviceType) {
+        const svc = SERVICES[serviceType];
+        showLoading(true, `Đang tạo đơn ${svc.name}...`);
+        const result = await apiRequest({ key: API_KEY, action: "add", service: String(svc.id), link, quantity: String(quantity) });
+        showLoading(false);
+
+        if (result && result.order) {
+            const orderId = result.order;
+            const charge = result.charge || "N/A";
+            ordersHistory[orderId] = {
+                order_id: orderId, link, quantity, service: serviceType,
+                service_name: svc.name, charge,
+                created_at: new Date().toLocaleString('vi-VN'), status: "Pending"
+            };
+            saveHistory();
+
+            sendTelegramNotification(`✅ ĐƠN ${svc.name.toUpperCase()} MỚI\n🔰 ID: ${orderId}\n📊 SL: ${quantity.toLocaleString()} ${svc.unit}\n🔗 Link: ${link}\n💰 Phí: ${typeof charge === 'number' ? charge.toLocaleString() : charge}đ`);
+            showToast(`✅ Tạo đơn thành công! Mã: ${orderId}`);
+
+            const priceEst = calcPrice(serviceType, quantity);
+            document.getElementById('dynamicPanel').innerHTML = `
+                <div class="panel">
+                    <div class="panel-title">✅ Tạo đơn thành công</div>
+                    <div class="success-card">
+                        <div class="success-icon">🎉</div>
+                        <div class="success-title">ĐƠN HÀNG ĐÃ TẠO</div>
+                        <div class="success-detail">
+                            <div class="success-row"><span class="sk">Order ID</span><span class="sv">#${orderId}</span></div>
+                            <div class="success-row"><span class="sk">Dịch vụ</span><span class="sv">${svc.icon} ${svc.name}</span></div>
+                            <div class="success-row"><span class="sk">Số lượng</span><span class="sv">${quantity.toLocaleString()} ${svc.unit}</span></div>
+                            <div class="success-row"><span class="sk">Ước tính</span><span class="sv">${priceEst.toLocaleString('vi-VN')}đ</span></div>
+                        </div>
+                        <button class="btn btn-secondary" id="backHomeBtn">🏠 Về trang chủ</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('backHomeBtn').onclick = renderMainMenu;
+        } else {
+            const errMsg = result?.error || "Không tạo được đơn, kiểm tra số dư hoặc liên hệ admin";
+            showToast(`❌ Thất bại: ${errMsg}`, true);
+            sendTelegramNotification(`⚠️ LỖI TẠO ĐƠN ${svc.name}: ${errMsg}\nLink: ${link}\nSL: ${quantity}`);
+        }
+    }
+
+    // --- Check Order Status ---
+    function showCheckOrderUI() {
+        highlightMenuBtn('btnCheck');
+        const panel = document.getElementById('dynamicPanel');
+
+        // Pre-fill last order if available
+        const lastOrderId = Object.keys(ordersHistory).pop() || '';
+
+        panel.innerHTML = `
+            <div class="panel">
+                <div class="panel-title">🔍 Kiểm tra trạng thái</div>
+                <div class="form-group">
+                    <label>🔢 Mã đơn hàng (Order ID)</label>
+                    <input type="text" id="checkOrderId" placeholder="Nhập Order ID..." value="${lastOrderId}">
+                </div>
+                <button class="btn btn-primary" id="checkBtn">🔍 Kiểm tra ngay</button>
+                <div id="checkResult"></div>
+                <button class="btn btn-secondary" style="margin-top:8px;" id="cancelCheckBtn">↩ Quay lại</button>
+            </div>
+        `;
+
+        document.getElementById('checkBtn').onclick = async () => {
+            const orderId = document.getElementById('checkOrderId').value.trim();
+            if (!orderId) { showToast("Vui lòng nhập Order ID", true); return; }
+            await fetchOrderStatus(orderId);
+        };
+
+        document.getElementById('cancelCheckBtn').onclick = renderMainMenu;
+
+        // Enter key
+        document.getElementById('checkOrderId').onkeypress = (e) => {
+            if (e.key === 'Enter') document.getElementById('checkBtn').click();
+        };
+
+        // Auto-check if there's a pre-filled ID
+        if (lastOrderId) {
+            // Don't auto-check, just pre-fill
+        }
+    }
+
+    async function fetchOrderStatus(orderId) {
+        showLoading(true, `Đang kiểm tra đơn #${orderId}...`);
+        const result = await apiRequest({ key: API_KEY, action: "status", order: orderId });
+        showLoading(false);
+
+        const resultDiv = document.getElementById('checkResult');
+        if (!resultDiv) return;
+
+        if (result && result.status !== undefined) {
+            // Update local history if we have this order
+            if (ordersHistory[orderId]) {
+                ordersHistory[orderId].status = result.status;
+                saveHistory();
+            }
+
+            const statusBadge = getStatusBadge(result.status);
+            const startCount = result.start_count !== undefined ? Number(result.start_count).toLocaleString() : 'N/A';
+            const remains = result.remains !== undefined ? Number(result.remains).toLocaleString() : 'N/A';
+            const charge = result.charge !== undefined ? (parseFloat(result.charge) || 0).toLocaleString('vi-VN') + 'đ' : 'N/A';
+
+            // Try to get info from local history
+            const localOrder = ordersHistory[orderId];
+            const svcName = localOrder ? `${SERVICES[localOrder.service]?.icon || ''} ${localOrder.service_name}` : '—';
+
+            resultDiv.innerHTML = `
+                <div class="status-result-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--teal);">#${orderId}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="status-row">
+                        <span class="status-key">Trạng thái</span>
+                        <span class="status-val">${result.status}</span>
+                    </div>
+                    ${localOrder ? `<div class="status-row"><span class="status-key">Dịch vụ</span><span class="status-val">${svcName}</span></div>` : ''}
+                    ${localOrder ? `<div class="status-row"><span class="status-key">Số lượng đặt</span><span class="status-val">${Number(localOrder.quantity).toLocaleString()} ${SERVICES[localOrder.service]?.unit || ''}</span></div>` : ''}
+                    <div class="status-row">
+                        <span class="status-key">Start count</span>
+                        <span class="status-val">${startCount}</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="status-key">Còn lại</span>
+                        <span class="status-val">${remains}</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="status-key">Phí</span>
+                        <span class="status-val">${charge}</span>
+                    </div>
+                    ${localOrder ? `<div class="status-row"><span class="status-key">Tạo lúc</span><span class="status-val" style="font-size:0.72rem;">${localOrder.created_at}</span></div>` : ''}
+                </div>
+            `;
+        } else {
+            const errMsg = result?.error || "Không tìm thấy đơn hàng này";
+            resultDiv.innerHTML = `
+                <div style="text-align:center; padding:16px; color:var(--red); font-size:0.85rem; margin-top:10px;">
+                    ❌ ${errMsg}
+                </div>
+            `;
+            showToast(`❌ ${errMsg}`, true);
+        }
+    }
+
+    // --- History ---
+    function showHistoryUI() {
+        highlightMenuBtn('btnHistory');
+        const panel = document.getElementById('dynamicPanel');
+        const orders = Object.values(ordersHistory).reverse();
+
+        if (orders.length === 0) {
+            panel.innerHTML = `
+                <div class="panel" style="text-align:center; padding:30px 16px;">
+                    <div style="font-size:2rem; margin-bottom:10px;">📭</div>
+                    <div style="color:var(--text-dim); font-size:0.85rem;">Chưa có đơn nào</div>
+                    <button class="btn btn-secondary" style="margin-top:16px;" id="backHistory">↩ Quay lại</button>
+                </div>
+            `;
+            document.getElementById('backHistory').onclick = renderMainMenu;
+            return;
+        }
+
+        let html = `<div class="panel"><div class="panel-title">📋 Lịch sử đơn hàng (${orders.length})</div>`;
+
+        for (const d of orders) {
+            const svc = SERVICES[d.service] || {};
+            html += `
+                <div class="history-item" data-oid="${d.order_id}" style="cursor:pointer;">
+                    <div class="history-header">
+                        <span class="history-id">#${d.order_id}</span>
+                        ${getStatusBadge(d.status)}
+                    </div>
+                    <div class="history-detail">${svc.icon || ''} ${d.service_name || d.service} · ${Number(d.quantity).toLocaleString()} ${svc.unit || ''}</div>
+                    <div class="history-date" style="margin-bottom:3px;">${d.created_at || ''}</div>
+                    <div class="history-link">${d.link || ''}</div>
+                </div>
+            `;
+        }
+
+        html += `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
+                <button class="btn btn-danger" id="clearHistoryBtn">🗑️ Xóa lịch sử</button>
+                <button class="btn btn-secondary" id="backHistoryBtn">↩ Quay lại</button>
+            </div>
+        </div>`;
+
+        panel.innerHTML = html;
+
+        // Click on history item to check status
+        panel.querySelectorAll('.history-item').forEach(item => {
+            item.onclick = () => {
+                const oid = item.dataset.oid;
+                highlightMenuBtn('btnCheck');
+                // Switch to check UI with pre-filled order ID
+                const dynPanel = document.getElementById('dynamicPanel');
+                if (dynPanel) {
+                    document.getElementById('btnCheck')?.click();
+                    setTimeout(() => {
+                        const inp = document.getElementById('checkOrderId');
+                        if (inp) {
+                            inp.value = oid;
+                            document.getElementById('checkBtn')?.click();
+                        }
+                    }, 100);
+                }
+            };
+        });
+
+        document.getElementById('clearHistoryBtn').onclick = () => {
+            if (confirm("Xóa toàn bộ lịch sử đơn hàng?")) {
+                ordersHistory = {};
+                saveHistory();
+                showHistoryUI();
+                showToast("Đã xóa lịch sử");
+            }
+        };
+        document.getElementById('backHistoryBtn').onclick = renderMainMenu;
+    }
+
+    function highlightMenuBtn(activeId) {
+        document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(activeId)?.classList.add('active');
+    }
+
+    // --- Start Screen ---
+    function showStartScreen() {
+        document.getElementById('mainContent').innerHTML = `
+            <div class="start-screen">
+                <button class="btn-start" id="startBtn">▶ START</button>
+                <div id="keySection" style="display:none;" class="key-box">
+                    <input type="password" id="secretKey" placeholder="🔐 Nhập mã kích hoạt" style="text-align:center;">
+                    <button class="btn btn-primary" id="submitKeyBtn">Xác nhận</button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('startBtn').onclick = () => {
+            showLoading(true, "Đang khởi động...");
+            setTimeout(() => {
+                showLoading(false);
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('keySection').style.display = 'flex';
+                document.getElementById('secretKey').focus();
+                showToast("🔐 Nhập mã kích hoạt để tiếp tục");
+            }, 1200);
+        };
+
+        const verify = () => {
+            const key = document.getElementById('secretKey').value.trim();
+            if (key === VALID_KEY) {
+                showLoading(true, "Xác thực thành công...");
+                setTimeout(() => {
+                    showLoading(false);
+                    isAuthenticated = true;
+                    renderMainMenu();
+                    showToast("✅ Đăng nhập thành công!");
+                }, 700);
+            } else {
+                const inp = document.getElementById('secretKey');
+                inp.classList.add('error-shake');
+                showToast("❌ Mã kích hoạt không đúng!", true);
+                setTimeout(() => inp.classList.remove('error-shake'), 400);
+                inp.value = '';
+                inp.focus();
+            }
+        };
+
+        document.getElementById('submitKeyBtn').onclick = verify;
+        document.getElementById('secretKey').onkeypress = e => { if (e.key === 'Enter') verify(); };
+    }
+
+    // --- Init ---
+    loadHistory();
+    showStartScreen();
+</script>
+
+</body>
+</html>
